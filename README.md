@@ -5,6 +5,7 @@ A modern RAG (Retrieval-Augmented Generation) system with web interface built us
 ## 🚀 Project Overview
 
 DocuChat is an intelligent document chat system that allows you to:
+
 - **Upload and manage document collections** - Support for multiple file formats
 - **Create searchable knowledge bases** - Advanced document indexing with LlamaIndex
 - **Interactive chat interface** - Natural language conversations with your documents
@@ -18,67 +19,92 @@ The system leverages the power of local LLMs through Ollama for privacy-focused 
 Before installing DocuChat, ensure you have the following installed:
 
 ### System Requirements
+
 - **Python 3.8+** - Required for backend services
-- **Node.js 16+** - Required for frontend development
-- **Docker & Docker Compose** - For containerized deployment (recommended)
+- **Node.js 16+** - Required for frontend development  
 - **Git** - For cloning the repository
 
 ### LLM Requirements
-- **Ollama** - Local LLM runtime (will be installed via Docker)
+
+- **Ollama** - Local LLM runtime (installed locally)
 - **Compatible GPU** (recommended) - For faster inference
 - **Minimum 8GB RAM** - 16GB+ recommended for better performance
 
-## 🐳 Docker Installation (Recommended)
+## 🔧 Installation Guide
 
-The easiest way to get DocuChat running is using Docker Compose:
+Follow these steps to set up DocuChat on your local machine:
 
 ### 1. Clone Repository
+
 ```bash
 git clone https://github.com/dadebr/docuchat.git
 cd docuchat
 ```
 
-### 2. Configure Environment
+### 2. Install Ollama
+
+**Linux/macOS:**
+```bash
+curl -fsSL https://ollama.ai/install.sh | sh
+```
+
+**Windows:**
+Download and install from [ollama.ai](https://ollama.ai/download/windows)
+
+### 3. Pull a Language Model
+
+```bash
+ollama pull llama2  # or your preferred model
+```
+
+### 4. Start Ollama Service
+
+```bash
+ollama serve
+```
+
+Keep this terminal open. Ollama will run on http://localhost:11434
+
+### 5. Configure Environment
+
 ```bash
 cp .env.example .env
-# Edit .env file with your configuration
+# Edit .env file if needed - default values should work for local setup
 ```
 
-### 3. Deploy with Docker Compose
-```bash
-docker-compose up -d
-```
+### 6. Backend Setup
 
-### 4. Access the Application
-- **Frontend**: http://localhost:3000
-- **Backend API**: http://localhost:8000
-- **Ollama API**: http://localhost:11434
+**Open a new terminal for the backend:**
 
-## 🔧 Manual Installation
-
-For development or custom deployments:
-
-### Backend Setup
 ```bash
 # Navigate to backend directory
 cd backend
 
 # Create virtual environment
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Activate virtual environment
+# On Linux/macOS:
+source venv/bin/activate
+# On Windows:
+venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
 
-# Configure environment
-cp ../.env.example .env
-# Edit .env with your settings
+# Copy environment file
+cp ../.env .env
 
 # Start backend server
 python main.py
 ```
 
-### Frontend Setup
+The API will be available at http://localhost:8000 with automatic documentation at /docs.
+
+### 7. Frontend Setup
+
+**Open another new terminal for the frontend:**
+
 ```bash
 # Navigate to frontend directory
 cd frontend
@@ -90,86 +116,65 @@ npm install
 npm start
 ```
 
-### Ollama Setup
-```bash
-# Install Ollama (Linux/macOS)
-curl -fsSL https://ollama.ai/install.sh | sh
+The web interface will be available at http://localhost:3000.
 
-# Pull a compatible model
-ollama pull llama2  # or your preferred model
+### 8. Alternative Frontend Setup (using npx)
 
-# Start Ollama service
-ollama serve
-```
-
-## 📖 Usage Guide
-
-### 1. Starting the Backend
-The FastAPI backend handles document processing, indexing, and chat operations:
-
-```bash
-cd backend
-python main.py
-```
-
-The API will be available at `http://localhost:8000` with automatic documentation at `/docs`.
-
-### 2. Starting the Frontend
-The React frontend provides the user interface:
+If you prefer not to install dependencies globally:
 
 ```bash
 cd frontend
+npx create-react-app . --template typescript
 npm start
 ```
 
-Access the web interface at `http://localhost:3000`.
+## 🚀 Quick Start
 
-### 3. Document Upload Process
-1. **Navigate to Upload Section** - Click "Upload Documents" in the interface
-2. **Select Files** - Choose your documents (PDF, TXT, DOCX supported)
-3. **Create Knowledge Base** - Provide a name for your document collection
-4. **Wait for Processing** - Documents will be indexed automatically
-5. **Confirmation** - Receive notification when indexing is complete
+Once all services are running:
 
-### 4. Chat Interface
-1. **Select Knowledge Base** - Choose from your available document collections
-2. **Start Conversation** - Type your questions in natural language
-3. **Receive Answers** - Get responses with source citations
-4. **Follow-up Questions** - Continue the conversation contextually
+1. **Access the web interface** at http://localhost:3000
+2. **Upload documents** using the upload interface
+3. **Create knowledge bases** by organizing your documents
+4. **Start chatting** with your documents using natural language
 
-## 🌟 Real-World Use Cases
+## 📖 Usage Guide
 
-### Legal Document Analysis
-```
-Use Case: Law firm analyzing contract collections
-- Upload: Contract documents, legal precedents
-- Query: "What are the standard termination clauses?"
-- Benefit: Quick access to relevant legal language
-```
+### Starting the System
 
-### Research Paper Review
-```
-Use Case: Academic research across multiple papers
-- Upload: Research papers, academic articles
-- Query: "What methodologies were used in machine learning studies?"
-- Benefit: Comprehensive literature review assistance
-```
+You need to run three services:
 
-### Corporate Knowledge Management
-```
-Use Case: Company policy and procedure queries
-- Upload: Employee handbooks, SOPs, training materials
-- Query: "What is the process for requesting time off?"
-- Benefit: Instant access to company information
-```
+1. **Ollama Service** (Terminal 1):
+   ```bash
+   ollama serve
+   ```
 
-### Technical Documentation
-```
-Use Case: Software development team documentation
-- Upload: API docs, architecture guides, code documentation
-- Query: "How do I implement authentication in the system?"
-- Benefit: Faster developer onboarding and support
-```
+2. **Backend Service** (Terminal 2):
+   ```bash
+   cd backend
+   source venv/bin/activate  # or venv\Scripts\activate on Windows
+   python main.py
+   ```
+
+3. **Frontend Service** (Terminal 3):
+   ```bash
+   cd frontend
+   npm start
+   ```
+
+### Document Upload Process
+
+1. Navigate to Upload Section - Click "Upload Documents" in the interface
+2. Select Files - Choose your documents (PDF, TXT, DOCX supported)
+3. Create Knowledge Base - Provide a name for your document collection
+4. Wait for Processing - Documents will be indexed automatically
+5. Confirmation - Receive notification when indexing is complete
+
+### Chat Interface
+
+1. Select Knowledge Base - Choose from your available document collections
+2. Start Conversation - Type your questions in natural language
+3. Receive Answers - Get responses with source citations
+4. Follow-up Questions - Continue the conversation contextually
 
 ## 🛠️ Troubleshooting
 
@@ -183,8 +188,7 @@ curl http://localhost:8000/health
 # Verify environment variables
 cat backend/.env
 
-# Check logs
-docker-compose logs backend
+# Check backend logs in the terminal running python main.py
 ```
 
 #### Frontend Not Loading
@@ -197,7 +201,10 @@ rm -rf node_modules package-lock.json
 npm install
 
 # Check for port conflicts
+# Linux/macOS:
 lsof -i :3000
+# Windows:
+netstat -ano | findstr :3000
 ```
 
 #### Ollama Model Issues
@@ -213,70 +220,88 @@ ollama run llama2 "Hello, world!"
 ```
 
 #### Document Processing Failures
-```bash
-# Check supported file formats
-# Ensure files are not corrupted
-# Verify sufficient disk space
-# Review backend logs for specific errors
-```
+- Check supported file formats (PDF, TXT, DOCX)
+- Ensure files are not corrupted
+- Verify sufficient disk space
+- Review backend logs for specific errors
 
 ### Performance Optimization
 
 #### For Large Document Collections
-- **Increase chunk size** in indexing configuration
-- **Use GPU acceleration** for Ollama if available
-- **Allocate more memory** to Docker containers
-- **Consider SSD storage** for better I/O performance
+- Increase chunk size in indexing configuration
+- Use GPU acceleration for Ollama if available
+- Consider SSD storage for better I/O performance
 
 #### For Slow Response Times
-- **Optimize model selection** - smaller models for faster inference
-- **Implement caching** for frequent queries
-- **Use vector database** for large-scale deployments
+- Optimize model selection - smaller models for faster inference
+- Implement caching for frequent queries
+- Use vector database for large-scale deployments
 
-### Error Code Reference
+## 🌟 Real-World Use Cases
 
-| Error Code | Description | Solution |
-|------------|-------------|----------|
-| CONN_001 | Backend connection failed | Check if backend service is running |
-| PROC_002 | Document processing error | Verify file format and integrity |
-| MODEL_003 | Ollama model not found | Pull required model with `ollama pull` |
-| UPLOAD_004 | File upload size exceeded | Check file size limits in configuration |
+### Legal Document Analysis
+Use Case: Law firm analyzing contract collections
+- Upload: Contract documents, legal precedents
+- Query: "What are the standard termination clauses?"
+- Benefit: Quick access to relevant legal language
+
+### Research Paper Review
+Use Case: Academic research across multiple papers
+- Upload: Research papers, academic articles
+- Query: "What methodologies were used in machine learning studies?"
+- Benefit: Comprehensive literature review assistance
+
+### Corporate Knowledge Management
+Use Case: Company policy and procedure queries
+- Upload: Employee handbooks, SOPs, training materials
+- Query: "What is the process for requesting time off?"
+- Benefit: Instant access to company information
+
+### Technical Documentation
+Use Case: Software development team documentation
+- Upload: API docs, architecture guides, code documentation
+- Query: "How do I implement authentication in the system?"
+- Benefit: Faster developer onboarding and support
 
 ## 🙏 Credits and Resources
 
 ### Core Technologies
+
 - **[LlamaIndex](https://llamaindex.ai/)** - Document indexing and retrieval framework
 - **[Ollama](https://ollama.ai/)** - Local LLM runtime and model management
 - **[FastAPI](https://fastapi.tiangolo.com/)** - Modern Python web framework for APIs
 - **[React](https://reactjs.org/)** - Frontend user interface library
 
 ### Key Dependencies
-- **Python Libraries**: `llama-index`, `fastapi`, `uvicorn`, `python-multipart`
-- **JavaScript Libraries**: `react`, `axios`, `styled-components`
-- **Infrastructure**: `docker`, `docker-compose`, `nginx`
+
+- Python Libraries: llama-index, fastapi, uvicorn, python-multipart
+- JavaScript Libraries: react, axios, styled-components
 
 ### Learning Resources
-- [LlamaIndex Documentation](https://docs.llamaindex.ai/)
-- [Ollama Model Library](https://ollama.ai/library)
-- [RAG Implementation Guide](https://python.langchain.com/docs/use_cases/question_answering)
-- [FastAPI Tutorial](https://fastapi.tiangolo.com/tutorial/)
+
+- **[LlamaIndex Documentation](https://docs.llamaindex.ai/)**
+- **[Ollama Model Library](https://ollama.ai/library)**
+- **[RAG Implementation Guide](https://python.langchain.com/docs/use_cases/question_answering)**
+- **[FastAPI Tutorial](https://fastapi.tiangolo.com/tutorial/)**
 
 ### Community and Support
-- **GitHub Issues**: Report bugs and request features
-- **Discussions**: Join community discussions for help and ideas
-- **Documentation**: Check the `/docs` endpoint for API documentation
+
+- GitHub Issues: Report bugs and request features
+- Discussions: Join community discussions for help and ideas
+- Documentation: Check the /docs endpoint for API documentation
 
 ### Contributing
+
 Contributions are welcome! Please:
+
 1. Fork the repository
 2. Create a feature branch
 3. Submit a pull request with detailed description
 
 ### License
+
 This project is open source. Please check the LICENSE file for details.
 
----
+Built with ❤️ for the open source community
 
-**Built with ❤️ for the open source community**
-
-*For additional support, please open an issue on GitHub or check the documentation at the `/docs` API endpoint.*
+For additional support, please open an issue on GitHub or check the documentation at the /docs API endpoint.
