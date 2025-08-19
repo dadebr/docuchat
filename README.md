@@ -48,8 +48,7 @@ cd docuchat
 curl -fsSL https://ollama.ai/install.sh | sh
 ```
 
-**Windows:**
-Download and install from [ollama.ai](https://ollama.ai/download/windows)
+**Windows:** Download and install from [ollama.ai](https://ollama.ai/download/windows)
 
 ### 3. Pull a Language Model
 
@@ -128,14 +127,102 @@ npx create-react-app . --template typescript
 npm start
 ```
 
+## 🪟 Windows Local Installation
+
+### Prerequisites
+
+- **Python for Windows** - Download from [python.org](https://www.python.org/downloads/windows/)
+  - ⚠️ **Important**: During installation, check "Add Python to PATH"
+- **Node.js** - Download from [nodejs.org](https://nodejs.org/)
+- **Ollama for Windows** - Download from [ollama.ai/download/windows](https://ollama.ai/download/windows)
+- **Git** (optional) - Download from [git-scm.com](https://git-scm.com/download/win)
+
+### Step-by-Step Installation
+
+1. **Clone or Download Repository**
+   ```cmd
+   git clone https://github.com/dadebr/docuchat.git
+   cd docuchat
+   ```
+   Or download as ZIP and extract to a folder.
+
+2. **Copy Environment File**
+   ```cmd
+   copy .env.example .env
+   ```
+
+3. **Backend Setup (Command Prompt)**
+   ```cmd
+   cd backend
+   python -m venv venv
+   venv\Scripts\activate
+   pip install -r requirements.txt
+   copy ..\..env .env
+   ```
+
+4. **Frontend Setup (New Command Prompt)**
+   ```cmd
+   cd frontend
+   npm install
+   ```
+
+5. **Install and Configure Ollama**
+   - Run the Ollama installer
+   - Open Command Prompt and run:
+   ```cmd
+   ollama pull llama2
+   ```
+
+### Running the Application (3 Terminals)
+
+**Terminal 1 - Ollama Service:**
+```cmd
+ollama serve
+```
+
+**Terminal 2 - Backend Service:**
+```cmd
+cd backend
+venv\Scripts\activate
+python main.py
+```
+
+**Terminal 3 - Frontend Service:**
+```cmd
+cd frontend
+npm start
+```
+
+### Troubleshooting Windows Issues
+
+#### Virtual Environment Activation
+If `venv\Scripts\activate` doesn't work, try:
+```cmd
+venv\Scripts\activate.bat
+```
+
+#### PowerShell Execution Policy
+If using PowerShell, you may need to run:
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+#### pip and Build Tools
+If you encounter build errors during `pip install`:
+- Install Visual Studio Build Tools
+- Or use: `pip install --upgrade setuptools wheel`
+
+#### File Copying
+If `copy` command fails, manually copy `.env.example` to `.env` and `backend/.env` using File Explorer.
+
 ## 🚀 Quick Start
 
 Once all services are running:
 
-1. **Access the web interface** at http://localhost:3000
-2. **Upload documents** using the upload interface
-3. **Create knowledge bases** by organizing your documents
-4. **Start chatting** with your documents using natural language
+1. Access the web interface at http://localhost:3000
+2. Upload documents using the upload interface
+3. Create knowledge bases by organizing your documents
+4. Start chatting with your documents using natural language
 
 ## 📖 Usage Guide
 
@@ -143,19 +230,19 @@ Once all services are running:
 
 You need to run three services:
 
-1. **Ollama Service** (Terminal 1):
+1. **Ollama Service (Terminal 1):**
    ```bash
    ollama serve
    ```
 
-2. **Backend Service** (Terminal 2):
+2. **Backend Service (Terminal 2):**
    ```bash
    cd backend
    source venv/bin/activate  # or venv\Scripts\activate on Windows
    python main.py
    ```
 
-3. **Frontend Service** (Terminal 3):
+3. **Frontend Service (Terminal 3):**
    ```bash
    cd frontend
    npm start
@@ -163,24 +250,25 @@ You need to run three services:
 
 ### Document Upload Process
 
-1. Navigate to Upload Section - Click "Upload Documents" in the interface
-2. Select Files - Choose your documents (PDF, TXT, DOCX supported)
-3. Create Knowledge Base - Provide a name for your document collection
-4. Wait for Processing - Documents will be indexed automatically
-5. Confirmation - Receive notification when indexing is complete
+1. **Navigate to Upload Section** - Click "Upload Documents" in the interface
+2. **Select Files** - Choose your documents (PDF, TXT, DOCX supported)
+3. **Create Knowledge Base** - Provide a name for your document collection
+4. **Wait for Processing** - Documents will be indexed automatically
+5. **Confirmation** - Receive notification when indexing is complete
 
 ### Chat Interface
 
-1. Select Knowledge Base - Choose from your available document collections
-2. Start Conversation - Type your questions in natural language
-3. Receive Answers - Get responses with source citations
-4. Follow-up Questions - Continue the conversation contextually
+1. **Select Knowledge Base** - Choose from your available document collections
+2. **Start Conversation** - Type your questions in natural language
+3. **Receive Answers** - Get responses with source citations
+4. **Follow-up Questions** - Continue the conversation contextually
 
 ## 🛠️ Troubleshooting
 
 ### Common Issues
 
 #### Backend Connection Issues
+
 ```bash
 # Check if backend is running
 curl http://localhost:8000/health
@@ -192,6 +280,7 @@ cat backend/.env
 ```
 
 #### Frontend Not Loading
+
 ```bash
 # Clear npm cache
 npm cache clean --force
@@ -208,6 +297,7 @@ netstat -ano | findstr :3000
 ```
 
 #### Ollama Model Issues
+
 ```bash
 # List available models
 ollama list
@@ -220,75 +310,86 @@ ollama run llama2 "Hello, world!"
 ```
 
 #### Document Processing Failures
-- Check supported file formats (PDF, TXT, DOCX)
-- Ensure files are not corrupted
-- Verify sufficient disk space
-- Review backend logs for specific errors
+
+- • Check supported file formats (PDF, TXT, DOCX)
+- • Ensure files are not corrupted
+- • Verify sufficient disk space
+- • Review backend logs for specific errors
 
 ### Performance Optimization
 
 #### For Large Document Collections
-- Increase chunk size in indexing configuration
-- Use GPU acceleration for Ollama if available
-- Consider SSD storage for better I/O performance
+
+- • Increase chunk size in indexing configuration
+- • Use GPU acceleration for Ollama if available
+- • Consider SSD storage for better I/O performance
 
 #### For Slow Response Times
-- Optimize model selection - smaller models for faster inference
-- Implement caching for frequent queries
-- Use vector database for large-scale deployments
+
+- • Optimize model selection - smaller models for faster inference
+- • Implement caching for frequent queries
+- • Use vector database for large-scale deployments
 
 ## 🌟 Real-World Use Cases
 
 ### Legal Document Analysis
+
 Use Case: Law firm analyzing contract collections
-- Upload: Contract documents, legal precedents
-- Query: "What are the standard termination clauses?"
-- Benefit: Quick access to relevant legal language
+
+- • Upload: Contract documents, legal precedents
+- • Query: "What are the standard termination clauses?"
+- • Benefit: Quick access to relevant legal language
 
 ### Research Paper Review
+
 Use Case: Academic research across multiple papers
-- Upload: Research papers, academic articles
-- Query: "What methodologies were used in machine learning studies?"
-- Benefit: Comprehensive literature review assistance
+
+- • Upload: Research papers, academic articles
+- • Query: "What methodologies were used in machine learning studies?"
+- • Benefit: Comprehensive literature review assistance
 
 ### Corporate Knowledge Management
+
 Use Case: Company policy and procedure queries
-- Upload: Employee handbooks, SOPs, training materials
-- Query: "What is the process for requesting time off?"
-- Benefit: Instant access to company information
+
+- • Upload: Employee handbooks, SOPs, training materials
+- • Query: "What is the process for requesting time off?"
+- • Benefit: Instant access to company information
 
 ### Technical Documentation
+
 Use Case: Software development team documentation
-- Upload: API docs, architecture guides, code documentation
-- Query: "How do I implement authentication in the system?"
-- Benefit: Faster developer onboarding and support
+
+- • Upload: API docs, architecture guides, code documentation
+- • Query: "How do I implement authentication in the system?"
+- • Benefit: Faster developer onboarding and support
 
 ## 🙏 Credits and Resources
 
 ### Core Technologies
 
-- **[LlamaIndex](https://llamaindex.ai/)** - Document indexing and retrieval framework
-- **[Ollama](https://ollama.ai/)** - Local LLM runtime and model management
-- **[FastAPI](https://fastapi.tiangolo.com/)** - Modern Python web framework for APIs
-- **[React](https://reactjs.org/)** - Frontend user interface library
+- • **[LlamaIndex](https://llamaindex.ai/)** - Document indexing and retrieval framework
+- • **[Ollama](https://ollama.ai/)** - Local LLM runtime and model management
+- • **[FastAPI](https://fastapi.tiangolo.com/)** - Modern Python web framework for APIs
+- • **[React](https://reactjs.org/)** - Frontend user interface library
 
 ### Key Dependencies
 
-- Python Libraries: llama-index, fastapi, uvicorn, python-multipart
-- JavaScript Libraries: react, axios, styled-components
+- • Python Libraries: llama-index, fastapi, uvicorn, python-multipart
+- • JavaScript Libraries: react, axios, styled-components
 
 ### Learning Resources
 
-- **[LlamaIndex Documentation](https://docs.llamaindex.ai/)**
-- **[Ollama Model Library](https://ollama.ai/library)**
-- **[RAG Implementation Guide](https://python.langchain.com/docs/use_cases/question_answering)**
-- **[FastAPI Tutorial](https://fastapi.tiangolo.com/tutorial/)**
+- • **[LlamaIndex Documentation](https://docs.llamaindex.ai/)**
+- • **[Ollama Model Library](https://ollama.ai/library)**
+- • **[RAG Implementation Guide](https://python.langchain.com/docs/use_cases/question_answering)**
+- • **[FastAPI Tutorial](https://fastapi.tiangolo.com/tutorial/)**
 
 ### Community and Support
 
-- GitHub Issues: Report bugs and request features
-- Discussions: Join community discussions for help and ideas
-- Documentation: Check the /docs endpoint for API documentation
+- • GitHub Issues: Report bugs and request features
+- • Discussions: Join community discussions for help and ideas
+- • Documentation: Check the /docs endpoint for API documentation
 
 ### Contributing
 
